@@ -21,8 +21,8 @@ $ git clone https://github.com/leeahnduk/CentOS-Ansible.git
 
 ## Screenshots
 ![Run screenshot](https://github.com/leeahnduk/CentOS-Ansible/blob/master/Ansible-CentOS.jpg)
-![Result screenshot](https://github.com/leeahnduk/Ansible-Tetration/blob/master/CentOS/Result.jpg)
-![Tetration screenshot](https://github.com/leeahnduk/Ansible-Tetration/blob/master/CentOS/Tetration.jpg)
+![Result screenshot](https://github.com/leeahnduk/CentOS-Ansible/blob/master/Result.jpg)
+![Tetration screenshot](https://github.com/leeahnduk/CentOS-Ansible/blob/master/Tetration.jpg)
 
 ## UserGuide
 How to use this application:
