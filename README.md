@@ -22,6 +22,7 @@ $ git clone https://github.com/leeahnduk/CentOS-Ansible.git
 ## Screenshots
 ![Run screenshot](https://github.com/leeahnduk/CentOS-Ansible/blob/master/Ansible-CentOS.jpg)
 ![Result screenshot](https://github.com/leeahnduk/CentOS-Ansible/blob/master/Result.jpg)
+![vCenter screenshot](https://github.com/leeahnduk/CentOS-Ansible/blob/master/vCenter.jpg)
 ![Tetration screenshot](https://github.com/leeahnduk/CentOS-Ansible/blob/master/Tetration.jpg)
 
 ## UserGuide
