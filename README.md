@@ -1,5 +1,5 @@
 # Ansible CentOS Apps
-This application helps to quickly deploy an multi Tier apps with CentOS VMs and deploy Tetration sensors automatically.
+This application helps to quickly deploy a multi Tier apps with CentOS VMs and deploy Tetration sensors automatically.
 
 ## Table of contents
 * [Installation](#Installation)
