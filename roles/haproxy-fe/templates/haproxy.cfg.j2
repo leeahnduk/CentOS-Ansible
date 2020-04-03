@@ -1,0 +1,56 @@
+global
+    log         127.0.0.1 local2
+
+    chroot      /var/lib/haproxy
+    pidfile     /var/run/haproxy.pid
+    maxconn     4000
+    user        haproxy
+    group       haproxy
+    daemon
+    stats socket /var/lib/haproxy/stats
+
+defaults
+    mode                    http
+    log                     global
+    option                  httplog
+    option                  dontlognull
+    option                  http-server-close
+    option                  forwardfor       except 127.0.0.0/8
+    option                  redispatch
+    retries                 3
+    timeout http-request    10s
+    timeout queue           1m
+    timeout connect         10s
+    timeout client          1m
+    timeout server          1m
+    timeout http-keep-alive 10s
+    timeout check           10s
+    maxconn                 3000
+
+frontend http-in
+    bind *:80
+
+    # Define hosts
+    acl host_wordpress hdr(host) -i {{ wp_hostname }}
+    acl host_opencart hdr(host) -i {{ oc_hostname }}
+
+    ## figure out which one to use
+    use_backend wordpress_cluster if host_wordpress
+    use_backend opencart_cluster if host_opencart
+
+backend wordpress_cluster
+    balance roundrobin
+    option httpclose
+    option forwardfor
+  {% for wp_backend in groups[wp_backend_pool] %}
+      server {{ wp_backend }} {{ hostvars[wp_backend]['ansible_host'] }}:80 check
+  {% endfor %}
+
+backend opencart_cluster
+    cookie PHPSESSID prefix
+    balance roundrobin
+    option httpclose
+    option forwardfor
+  {% for oc_backend in groups[oc_backend_pool] %}
+      server {{ oc_backend }} {{ hostvars[oc_backend]['ansible_host'] }}:80 check cookie
+  {% endfor %}

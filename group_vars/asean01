@@ -1,0 +1,42 @@
+---
+pod: "01"
+wp_backend_pool: "asean{{ pod }}-wordpress-vms"
+oc_backend_pool: "asean{{ pod }}-opencart-vms"
+oc_redis_pool: "asean{{ pod }}-redis-oc"
+
+www_root: "/nfs/web/asean{{ pod }}"
+
+nfs_mount: [
+  "{{ www_root }}"
+]
+
+# Variables listed here are applicable to all host groups
+wp_db_hostname: "{{ mysql_server }}"
+wp_db_name: "wp_asean{{ pod }}"
+wp_db_user: "wp_asean{{ pod }}"
+wp_db_password: secret
+wp_hostname: "acmeblog.dmz.cisco.demo"
+wp_path: "{{ www_root }}/wordpress"
+wp_auto_up_disable: false
+wp_admin_name: admin
+wp_admin_email: asean-tapod-admin@cisco.com
+wp_admin_password: secret
+
+#Define Core Update Level
+# true  = Development, minor, and major updates are all enabled
+# false = Development, minor, and major updates are all disabled
+# minor = Minor updates are enabled, development, and major updates are disabled
+wp_core_update_level: true
+wp_version: 5.3.2
+wp_sha1sum: fded476f112dbab14e3b5acddd2bcfa550e7b01b
+
+oc_db_hostname: "{{ mysql_server }}"
+oc_db_name: "oc_asean{{ pod }}"
+oc_db_user: "oc_asean{{ pod }}"
+oc_db_password: secret
+oc_hostname: "acmeshop.dmz.cisco.demo"
+oc_path: "{{ www_root }}/opencart"
+oc_version: 3.0.2.0
+oc_admin_name: admin
+oc_admin_email: asean-tapod-admin@cisco.com
+oc_admin_password: secret

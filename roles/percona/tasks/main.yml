@@ -1,0 +1,14 @@
+---
+  - include: install.yml
+  - include: configure.yml
+  - include: bootstrap.yml
+  - include: secure.yml
+
+  - name: Start MySQL Service
+    command: /etc/init.d/mysql bootstrap-pxc
+    become: yes
+    become_method: sudo
+    when: bootstrapping == false
+
+  - name: wait for mysql port
+    wait_for: port={{mysql_port}} state=started timeout=30

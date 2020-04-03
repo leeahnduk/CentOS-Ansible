@@ -1,0 +1,74 @@
+---
+- name: Deploy CentOS VMs
+  hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Create VM from template
+      vsphere_guest:
+        validate_certs: False
+        vcenter_hostname: "{{ vm_vsphere_host }}"
+        username: "{{ vm_vsphere_user }}"
+        password: "{{ vm_vsphere_password }}"
+        esxi:
+          hostname: "{{ vm_esx_host }}"
+          datacenter: "{{ vm_vsphere_datacenter }}"
+        guest: "{{ inventory_hostname }}"
+        from_template: yes
+        template_src: "{{ vm_vsphere_template }}"
+        power_on_after_clone: no
+        vm_extra_config:
+          notes: "{{ vm_notes }}"
+          folder: "{{ myvm_folder }}"
+          guestinfo.ipaddr: "{{ ansible_host }}"
+          guestinfo.netmask: "{{ myvm_netmask }}"
+          guestinfo.gateway: "{{ myvm_gw }}"
+          guestinfo.hostname: "{{ inventory_hostname }}"
+          guestinfo.domainname: "{{ myvm_domain }}"
+        vm_disk:
+          disk1:
+            size_gb: 100
+            type: thin
+            datastore: "{{ myvm_disk }}"
+        vm_nic:
+          nic1:
+            type: vmxnet3
+            network: "{{ myvm_network }}"
+        vm_hardware:
+          memory_mb: "{{ myvm_memory | default(1024) }}"
+
+    - name: Reconfigure VM
+      vsphere_guest:
+        validate_certs: False
+        vcenter_hostname: "{{ vm_vsphere_host }}"
+        username: "{{ vm_vsphere_user }}"
+        password: "{{ vm_vsphere_password }}"
+        esxi:
+          hostname: "{{ vm_esx_host }}"
+          datacenter: "{{ vm_vsphere_datacenter }}"
+        guest: "{{ inventory_hostname }}"
+        state: reconfigured
+        vm_nic:
+          nic1:
+            type: vmxnet3
+            network: "{{ myvm_network }}"
+            network_type: dvs
+
+    - name: Power On VM
+      vsphere_guest:
+        validate_certs: False
+        vcenter_hostname: "{{ vm_vsphere_host }}"
+        username: "{{ vm_vsphere_user }}"
+        password: "{{ vm_vsphere_password }}"
+        esxi:
+          hostname: "{{ vm_esx_host }}"
+          datacenter: "{{ vm_vsphere_datacenter }}"
+        guest: "{{ inventory_hostname }}"
+        state: powered_on
+
+    - name: Wait for SSH before continuing...
+      local_action: wait_for port=22 host={{ ansible_host }}
+
+    - name: Wait for things to settle
+      pause:
+        seconds: 30

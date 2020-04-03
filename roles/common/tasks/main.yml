@@ -1,0 +1,72 @@
+---
+- name: Update resolv.conf
+  template: src=resolv.conf.j2 dest=/etc/resolv.conf
+  become: yes
+  become_method: sudo
+
+- name: Install base packages
+  yum: name={{ item }} state=present
+  with_items:
+    - wget
+    - curl
+    - zlib
+    - libselinux-python
+    - unzip
+  become: yes
+  become_method: sudo
+  tags:
+    - packages
+
+- name: Disable selinux
+  selinux:
+    policy: targeted
+    state: permissive
+  become: yes
+  become_method: sudo
+
+- name: Reload ansible_facts
+  setup:
+
+- name: Disable Firewall
+  service: name=iptables state=stopped enabled=no
+  become: yes
+  become_method: sudo
+
+- name: Create proxy env file
+  template:
+    src: proxy.j2
+    dest: /etc/profile.d/proxy.sh
+    owner: root
+    group: root
+    mode: 0744
+  when: http_proxy is defined
+  become: yes
+  become_method: sudo
+  tags:
+    - configuration
+    - proxy
+
+
+- name: Install epel packages
+  yum: name={{ item }} state=present
+  with_items:
+    - python-pip
+  become: yes
+  become_method: sudo
+  tags:
+    - packages
+
+- name: restart machine
+  command: shutdown -r now "Ansible triggered"
+  async: 0
+  poll: 0
+  ignore_errors: true
+  become: yes
+  become_method: sudo
+
+- name: Wait for SSH before continuing...
+  local_action: wait_for port=22 host={{ ansible_host }} delay=30 timeout=60
+
+- name: Wait for things to settle
+  pause:
+    seconds: 30

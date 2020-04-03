@@ -1,0 +1,74 @@
+---
+  - name: Detect bootstrapping
+    set_fact:
+      bootstrapping: true
+    when: "'percona01' in inventory_hostname"
+
+  - name: Set selinux to permissive
+    shell: "setenforce 0"
+    become: yes
+    become_method: sudo
+
+  - name: Boostrap MySQL Service (6.x)
+    command: /etc/init.d/mysql bootstrap-pxc
+    when: bootstrapping
+    become: yes
+    become_method: sudo
+
+  - name: Acquire temporary root pass
+    shell: >
+      awk -F ': ' '$0 ~ "temporary password"{print $2}' {{ mysql_log_error }}
+    register: mysql_root_temp_password_stdout
+    become: yes
+    become_method: sudo
+    when: bootstrapping
+
+  - name: Set temp root pass as root password
+    set_fact:
+      mysql_temp_root_password: "{{ mysql_root_temp_password_stdout.stdout }}"
+    when: bootstrapping
+    ignore_errors: True
+    #mysql_root_temp_password_stdout is defined
+
+  - debug:
+      msg: "mysql_temp_root_password {{ mysql_temp_root_password }}"
+    when: bootstrapping
+
+  - name: Update MySQL root password for localhost root account
+    shell: >
+      mysql -u root -p{{ mysql_temp_root_password }} --connect-expired-password -NBe 'ALTER USER "root"@"localhost" IDENTIFIED WITH mysql_native_password BY "{{ mysql_root_password }}";'
+    when: bootstrapping
+    ignore_errors: True
+
+  - name: Copy user-my.cnf file with password credentials.
+    template:
+      src: "root-my.cnf.j2"
+      dest: "/home/ansible/.my.cnf"
+      owner: "ansible"
+      mode: 0600
+
+  - name: Create ansible User
+    mysql_user:
+      name: "{{ mysql_ansible_user }}"
+      password: "{{ mysql_ansible_password }}"
+      host: "%"
+      state: present
+      priv: '*.*:ALL,GRANT'
+      login_user: "root"
+      login_password: "{{ mysql_root_password }}"
+    when: bootstrapping
+    ignore_errors: True
+
+  - name: Create sstuser
+    mysql_user:
+      name: "{{ wsrep_sst_username }}"
+      password: "{{ wsrep_sst_password }}"
+      host: "{{ item }}"
+      state: present
+      priv: "*.*:PROCESS,RELOAD,LOCK TABLES,REPLICATION CLIENT"
+      login_user: "root"
+      login_password: "{{ mysql_root_password }}"    
+    with_items:
+      - localhost
+    when: bootstrapping
+    ignore_errors: True

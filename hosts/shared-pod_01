@@ -1,0 +1,28 @@
+[percona_server:children]
+percona-vms
+
+[nfs_server:children]
+nfs-vms
+
+[haproxy-be:children]
+haproxy-vms
+
+#Shared
+[percona-vms]
+s01-percona01 myvm_disk="100" myvm_memory="2048" myvm_network="VLAN1001" ansible_host="172.21.251.11" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.251.1" myvm_folder="Shared"
+s01-percona02 myvm_disk="100" myvm_memory="2048" myvm_network="VLAN1001" ansible_host="172.21.251.12" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.251.1" myvm_folder="Shared"
+s01-percona03 myvm_disk="100" myvm_memory="2048" myvm_network="VLAN1001" ansible_host="172.21.251.13" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.251.1" myvm_folder="Shared"
+
+[nfs-vms]
+s01-nfs01 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1001" ansible_host="172.21.251.21" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.251.1" myvm_folder="Shared"
+
+[haproxy-vms]
+s01-haproxy01 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1001" ansible_host="172.21.251.10" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.251.1" myvm_folder="Shared"
+
+#[dns-vms]
+#s01-dns01 myvm_disk="100" myvm_memory="512" myvm_network="VLAN1001" ansible_host="172.21.251.2" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.251.1" myvm_folder="Shared"
+#s01-dns02 myvm_disk="100" myvm_memory="512" myvm_network="VLAN1001" ansible_host="172.21.251.3" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.251.1" myvm_folder="Shared"
+
+#[ntp-vms]
+#s01-ntp01 myvm_disk="100" myvm_memory="512" myvm_network="VLAN1001" ansible_host="172.21.251.4" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.251.1" myvm_folder="Shared"
+#s01-ntp02 myvm_disk="100" myvm_memory="512" myvm_network="VLAN1001" ansible_host="172.21.251.5" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.251.1" myvm_folder="Shared"

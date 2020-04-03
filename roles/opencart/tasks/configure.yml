@@ -1,0 +1,28 @@
+---
+  - name: run install/cli_install.php install
+    command: "php {{ www_root }}/opencart/install/cli_install.php install --db_hostname {{ oc_db_hostname }} --db_username {{ oc_db_user }} --db_password {{ oc_db_password }} --db_database {{ oc_db_name }} --db_driver mysqli --username {{ oc_admin_name }} --password {{ oc_admin_password }} --email {{ oc_admin_email }} --http_server http://{{ oc_hostname }}/"
+    become: yes
+    become_method: sudo
+    ignore_errors: True
+    when: "'oc01' in inventory_hostname"
+    tags:
+      - opencart
+      - oc-config
+
+  - name: remove opencart install dir
+    file: state=absent dest={{ www_root }}/opencart/install
+    become: yes
+    become_method: sudo
+    ignore_errors: True
+    when: "'oc01' in inventory_hostname"
+    tags:
+      - opencart
+
+  - name: Change ownership of opencart installation
+    file: path="{{ oc_path }}" owner=opencart group=opencart state=directory recurse=yes
+    become: yes
+    become_method: sudo
+    ignore_errors: True
+    when: "'oc01' in inventory_hostname"
+    tags:
+      - opencart

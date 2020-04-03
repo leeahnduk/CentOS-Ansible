@@ -1,0 +1,176 @@
+[pod01:children]
+pod01-haproxy-vms
+pod01-wordpress-vms
+pod01-opencart-vms
+pod01-redis-vms
+
+[pod02:children]
+pod02-haproxy-vms
+pod02-wordpress-vms
+pod02-opencart-vms
+pod02-redis-vms
+
+[pod03:children]
+pod03-haproxy-vms
+pod03-wordpress-vms
+pod03-opencart-vms
+pod03-redis-vms
+
+[pod04:children]
+pod04-haproxy-vms
+pod04-wordpress-vms
+pod04-opencart-vms
+pod04-redis-vms
+
+[pod05:children]
+pod05-haproxy-vms
+pod05-wordpress-vms
+pod05-opencart-vms
+pod05-redis-vms
+
+[pod06:children]
+pod06-haproxy-vms
+pod06-wordpress-vms
+pod06-opencart-vms
+pod06-redis-vms
+
+[wordpress_server:children]
+pod01-wordpress-vms
+pod02-wordpress-vms
+pod03-wordpress-vms
+pod04-wordpress-vms
+pod05-wordpress-vms
+pod06-wordpress-vms
+
+[opencart_server:children]
+pod01-opencart-vms
+pod02-opencart-vms
+pod03-opencart-vms
+pod04-opencart-vms
+pod05-opencart-vms
+pod06-opencart-vms
+
+[haproxy-fe:children]
+pod01-haproxy-vms
+pod02-haproxy-vms
+pod03-haproxy-vms
+pod04-haproxy-vms
+pod05-haproxy-vms
+pod06-haproxy-vms
+
+[redis_server:children]
+pod01-redis-vms
+pod02-redis-vms
+pod03-redis-vms
+pod04-redis-vms
+pod05-redis-vms
+pod06-redis-vms
+
+[pod01-redis-oc]
+pod01-redis01
+
+[pod02-redis-oc]
+pod02-redis01
+
+[pod03-redis-oc]
+pod03-redis01
+
+[pod04-redis-oc]
+pod04-redis01
+
+[pod05-redis-oc]
+pod05-redis01
+
+[pod06-redis-oc]
+pod06-redis01
+
+#POD01
+[pod01-haproxy-vms]
+pod01-haproxy01 myvm_disk="100" myvm_memory="512" myvm_network="VLAN1011" ansible_host="172.21.201.11" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.201.1" myvm_folder="POD01"
+
+[pod01-wordpress-vms]
+pod01-wp01 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1011" ansible_host="172.21.201.31" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.201.1" myvm_folder="POD01"
+pod01-wp02 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1011" ansible_host="172.21.201.32" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.201.1" myvm_folder="POD01"
+
+[pod01-opencart-vms]
+pod01-oc01 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1011" ansible_host="172.21.201.41" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.201.1" myvm_folder="POD01"
+pod01-oc02 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1011" ansible_host="172.21.201.42" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.201.1" myvm_folder="POD01"
+
+[pod01-redis-vms]
+pod01-redis01 myvm_disk="100" myvm_memory="2048" myvm_network="VLAN1011" ansible_host="172.21.201.51" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.201.1" myvm_folder="POD01"
+
+#POD02
+[pod02-haproxy-vms]
+pod02-haproxy01 myvm_disk="100" myvm_memory="512" myvm_network="VLAN1012" ansible_host="172.21.202.11" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.202.1" myvm_folder="POD02"
+
+[pod02-wordpress-vms]
+pod02-wp01 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1012" ansible_host="172.21.202.31" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.202.1" myvm_folder="POD02"
+pod02-wp02 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1012" ansible_host="172.21.202.32" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.202.1" myvm_folder="POD02"
+
+[pod02-opencart-vms]
+pod02-oc01 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1012" ansible_host="172.21.202.41" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.202.1" myvm_folder="POD02"
+pod02-oc02 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1012" ansible_host="172.21.202.42" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.202.1" myvm_folder="POD02"
+
+[pod02-redis-vms]
+pod02-redis01 myvm_disk="100" myvm_memory="2048" myvm_network="VLAN1012" ansible_host="172.21.202.51" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.202.1" myvm_folder="POD02"
+
+
+#POD03
+[pod03-haproxy-vms]
+pod03-haproxy01 myvm_disk="100" myvm_memory="512" myvm_network="VLAN1013" ansible_host="172.21.203.11" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.203.1" myvm_folder="POD03"
+
+[pod03-wordpress-vms]
+pod03-wp01 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1013" ansible_host="172.21.203.31" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.203.1" myvm_folder="POD03"
+pod03-wp02 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1013" ansible_host="172.21.203.32" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.203.1" myvm_folder="POD03"
+
+[pod03-opencart-vms]
+pod03-oc01 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1013" ansible_host="172.21.203.41" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.203.1" myvm_folder="POD03"
+pod03-oc02 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1013" ansible_host="172.21.203.42" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.203.1" myvm_folder="POD03"
+
+[pod03-redis-vms]
+pod03-redis01 myvm_disk="100" myvm_memory="2048" myvm_network="VLAN1013" ansible_host="172.21.203.51" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.203.1" myvm_folder="POD03"
+
+#POD04
+[pod04-haproxy-vms]
+pod04-haproxy01 myvm_disk="100" myvm_memory="512" myvm_network="VLAN1014" ansible_host="172.21.204.11" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.204.1" myvm_folder="POD04"
+
+[pod04-wordpress-vms]
+pod04-wp01 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1014" ansible_host="172.21.204.31" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.204.1" myvm_folder="POD04"
+pod04-wp02 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1014" ansible_host="172.21.204.32" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.204.1" myvm_folder="POD04"
+
+[pod04-opencart-vms]
+pod04-oc01 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1014" ansible_host="172.21.204.41" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.204.1" myvm_folder="POD04"
+pod04-oc02 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1014" ansible_host="172.21.204.42" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.204.1" myvm_folder="POD04"
+
+[pod04-redis-vms]
+pod04-redis01 myvm_disk="100" myvm_memory="2048" myvm_network="VLAN1014" ansible_host="172.21.204.51" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.204.1" myvm_folder="POD04"
+
+#POD05
+[pod05-haproxy-vms]
+pod05-haproxy01 myvm_disk="100" myvm_memory="512" myvm_network="VLAN1015" ansible_host="172.21.205.11" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.205.1" myvm_folder="POD05"
+
+[pod05-wordpress-vms]
+pod05-wp01 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1015" ansible_host="172.21.205.31" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.205.1" myvm_folder="POD05"
+pod05-wp02 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1015" ansible_host="172.21.205.32" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.205.1" myvm_folder="POD05"
+
+[pod05-opencart-vms]
+pod05-oc01 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1015" ansible_host="172.21.205.41" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.205.1" myvm_folder="POD05"
+pod05-oc02 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1015" ansible_host="172.21.205.42" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.205.1" myvm_folder="POD05"
+
+[pod05-redis-vms]
+pod05-redis01 myvm_disk="100" myvm_memory="2048" myvm_network="VLAN1015" ansible_host="172.21.205.51" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.205.1" myvm_folder="POD05"
+
+#POD06
+[pod06-haproxy-vms]
+pod06-haproxy01 myvm_disk="100" myvm_memory="512" myvm_network="VLAN1016" ansible_host="172.21.206.11" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.206.1" myvm_folder="POD06"
+
+[pod06-wordpress-vms]
+pod06-wp01 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1016" ansible_host="172.21.206.31" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.206.1" myvm_folder="POD06"
+pod06-wp02 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1016" ansible_host="172.21.206.32" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.206.1" myvm_folder="POD06"
+
+[pod06-opencart-vms]
+pod06-oc01 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1016" ansible_host="172.21.206.41" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.206.1" myvm_folder="POD06"
+pod06-oc02 myvm_disk="100" myvm_memory="1024" myvm_network="VLAN1016" ansible_host="172.21.206.42" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.206.1" myvm_folder="POD06"
+
+[pod06-redis-vms]
+pod06-redis01 myvm_disk="100" myvm_memory="2048" myvm_network="VLAN1016" ansible_host="172.21.206.51" myvm_netmask="255.255.255.0" myvm_domain="insbu.lab" myvm_gw="172.21.206.1" myvm_folder="POD06"

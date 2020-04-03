@@ -1,0 +1,23 @@
+---
+  - name: Write custom server configuration
+    template: src=my.cnf.j2 dest=/etc/my.cnf owner=mysql mode=0600
+    become: yes
+    become_method: sudo
+
+  - name: Copy SSL ca
+    copy: dest={{mysql_ssl_ca}} src={{mysql_ssl_ca_src}}
+    when: mysql_ssl_ca_src is defined
+    become: yes
+    become_method: sudo
+
+  - name: Copy SSL cert
+    copy: dest={{mysql_ssl_cert}} src={{mysql_ssl_cert_src}} owner=root group=mysql mode=0444
+    when: mysql_ssl_cert_src is defined
+    become: yes
+    become_method: sudo
+
+  - name: Copy SSL key
+    copy: dest={{mysql_ssl_key}} src={{mysql_ssl_key_src}} owner=root group=mysql mode=0440
+    when: mysql_ssl_key_src is defined
+    become: yes
+    become_method: sudo

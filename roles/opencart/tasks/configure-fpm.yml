@@ -1,0 +1,21 @@
+---
+  - name: Copy nginx opencart configuration
+    template: src=default.conf dest=/etc/nginx/conf.d/opencart.conf
+    become: yes
+    become_method: sudo
+
+  - name: Copy php-fpm configuration
+    template: src=opencart.conf dest=/etc/php-fpm.d/
+    become: yes
+    become_method: sudo
+
+  - name: Start php-fpm Service
+    service: name=php-fpm state=started enabled=yes
+    notify: restart nginx
+    become: yes
+    become_method: sudo
+
+  - name: Restart NGINX
+    service: name=nginx state=restarted
+    become: yes
+    become_method: sudo

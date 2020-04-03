@@ -1,0 +1,44 @@
+---
+
+#http_proxy: http://proxy.esl.cisco.com:80
+#no_proxy
+
+mysql_ansible_user: "ansible"
+mysql_ansible_password: "s3cret"
+mysql_server: 192.168.33.130
+
+sensor_file: /tmp/asean_enforcer_linux.sh
+
+ntp_servers: [
+  "192.168.9.11",
+]
+
+dns_servers: [
+  "192.168.20.2"
+]
+
+nfs_server: 192.168.33.133
+nfs_exports: [
+  "/nfs/web/asean01 192.168.33.0/28(rw,fsid=0,sync,no_root_squash)",
+  "/nfs/web/asean02 192.168.33.16/28(rw,fsid=0,sync,no_root_squash)",
+  "/nfs/web/asean03 192.168.33.32/28(rw,fsid=0,sync,no_root_squash)",
+  "/nfs/web/asean04 192.168.33.48/28(rw,fsid=0,sync,no_root_squash)",
+  "/nfs/web/asean05 192.168.33.64/28(rw,fsid=0,sync,no_root_squash)"
+]
+
+# This is used for the nginx server configuration, but access to the
+# WordPress site is not restricted by a named host.
+nginx_port: 80
+
+vm_vsphere_host: 192.168.20.4
+vm_vsphere_user: administrator@dmz.cisco.demo
+vm_vsphere_password: C1scoUC$
+vm_vsphere_datacenter: SGP
+vm_vsphere_template: CentOS-68-vmx10
+vm_esx_host: hx-2-compute2.cisco.demo
+vm_datastore: Tet
+vm_network: Core|Tetration|Tet-Apps
+vm_cluster_name: HX-2
+vm_memory: 2048
+vm_notes: Created by Ansible
+dumpfacts: false

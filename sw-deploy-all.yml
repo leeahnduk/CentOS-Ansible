@@ -1,0 +1,86 @@
+---
+
+- name: Install NFS
+  hosts: nfs_server
+  remote_user: ansible
+
+  roles:
+    - common
+    - { role: ntp-client, tags: ntp }
+    - nfs-server
+    - ssh
+
+- name: Install Base
+  hosts: all
+  remote_user: ansible
+
+  roles:
+    - common
+    - { role: ntp-client, tags: ntp }
+    - ssh
+
+- name: Install MySQL (Percona)
+  hosts: percona_server
+  remote_user: ansible
+
+  roles:
+    - common
+    - { role: ntp-client, tags: ntp }
+    - percona
+    - ssh
+
+- name: Install Redis
+  hosts: redis_server
+  remote_user: ansible
+
+  roles:
+    - common
+    - { role: ntp-client, tags: ntp }
+    - redis
+    - ssh
+
+- name: Install WordPress, Nginx, and PHP-FPM
+  hosts: wordpress_server
+  remote_user: ansible
+
+  roles:
+    - common
+    - nfs-client
+    - { role: ntp-client, tags: ntp }
+    - nginx
+    - php-fpm
+    - wordpress
+    - ssh
+
+- name: Install OpenCart, Nginx, and PHP-FPM
+  hosts: opencart_server
+  remote_user: ansible
+
+  roles:
+    - common
+    - nfs-client
+    - { role: ntp-client, tags: ntp }
+    - nginx
+    - php-fpm
+    - opencart
+    - ssh
+
+- name: Install HAProxy Frontend
+  hosts: haproxy-fe
+  remote_user: ansible
+
+  roles:
+    - common
+    - { role: ntp-client, tags: ntp }
+    - haproxy-fe
+    - ssh
+
+- name: Install HAProxy Backend
+  hosts: haproxy-be
+  remote_user: ansible
+
+  roles:
+    - common
+    - { role: ntp-client, tags: ntp }
+    - haproxy-be
+    - ssh

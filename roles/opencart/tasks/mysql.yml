@@ -1,0 +1,29 @@
+---
+  - name: Install MySQL utils
+    yum: name={{ item }} state=present
+    with_items:
+      - MySQL-python
+      - perl-MD5
+    become: yes
+    become_method: sudo
+
+  - name: create mysql database for opencart
+    mysql_db:
+      name: "{{ oc_db_name }}"
+      state: present
+      login_user: "{{ mysql_ansible_user }}"
+      login_password: "{{ mysql_ansible_password }}"
+      login_host: "{{ oc_db_hostname }}"
+    when: "'oc01' in inventory_hostname"
+
+  - name: create mysql user for opencart
+    mysql_user:
+      name: "{{ oc_db_user }}"
+      host: "%"
+      password: "{{ oc_db_password }}"
+      priv: "{{ oc_db_name }}.*:ALL"
+      state: present
+      login_user: "{{ mysql_ansible_user }}"
+      login_password: "{{ mysql_ansible_password }}"
+      login_host: "{{ oc_db_hostname }}"
+    when: "'oc01' in inventory_hostname"

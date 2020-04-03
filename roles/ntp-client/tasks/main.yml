@@ -1,0 +1,35 @@
+---
+
+- name: Install NTP
+  yum: name=ntp state=installed
+  become: yes
+  become_method: sudo
+
+- name: Copy over the NTP configuration
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  become: yes
+  become_method: sudo
+
+- name: Make sure ntp is stopped
+  service: name=ntpd state=stopped
+  become: yes
+  become_method: sudo
+
+- name: force ntp update
+  shell: "ntpdate -s {{ ntp_servers[0] }}"
+  become: yes
+  become_method: sudo
+  args:
+    warn: false
+
+- name: synch hw clock
+  shell: "hwclock --systohc"
+  become: yes
+  become_method: sudo
+  args:
+    warn: false
+
+- name: start ntp
+  service: name=ntpd state=started
+  become: yes
+  become_method: sudo

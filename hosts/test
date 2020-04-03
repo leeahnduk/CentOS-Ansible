@@ -1,0 +1,12 @@
+[restart:children]
+test-vms
+
+[test_server:children]
+test-vms
+
+
+#Ansible Test VM
+[test-vms]
+CentOS01 myvm_disk="10" myvm_memory="2048" myvm_network="Core|Tetration|Tet-Shared" ansible_host="192.168.33.135" myvm_netmask="255.255.255.240" myvm_domain="dmz.cisco.demo" myvm_gw="192.168.33.129" myvm_folder="Ansible"
+CentOS02 myvm_disk="10" myvm_memory="2048" myvm_network="Core|Tetration|Tet-Shared" ansible_host="192.168.33.136" myvm_netmask="255.255.255.240" myvm_domain="dmz.cisco.demo" myvm_gw="192.168.33.129" myvm_folder="Ansible"
+CentOS03 myvm_disk="10" myvm_memory="2048" myvm_network="Core|Tetration|Tet-Shared" ansible_host="192.168.33.137" myvm_netmask="255.255.255.240" myvm_domain="dmz.cisco.demo" myvm_gw="192.168.33.129" myvm_folder="Ansible"

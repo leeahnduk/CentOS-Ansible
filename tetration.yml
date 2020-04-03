@@ -1,0 +1,7 @@
+---
+- name: Install Tetration
+  hosts: all
+  remote_user: ansible
+
+  roles:
+    - { role: tetration, tags: tetration }

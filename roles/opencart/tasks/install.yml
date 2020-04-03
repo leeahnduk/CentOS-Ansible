@@ -1,0 +1,113 @@
+---
+  - name: Is OpenCart installed?
+    stat: path="{{ www_root }}/opencart/index.php"
+    register: oc_dir
+    tags:
+      - opencart
+    #wp_dir.stat.isdir is not defined
+
+  - name: Update hosts files for opencart
+    lineinfile:
+      dest: /etc/hosts
+      line: '127.0.0.1 {{ oc_hostname }}'
+      owner: root
+      group: root
+      mode: 0644
+    become: yes
+    become_method: sudo
+
+  - name: Install php-fpm and deps
+    yum: name={{ item }} state=present
+    with_items:
+      - php-gd
+      - php-mcrypt
+    become: yes
+    become_method: sudo
+
+  - name: Delete tmp files
+    file: state=absent dest={{ item }}
+    with_items:
+      - /tmp/opencart-{{ oc_version }}
+      - /tmp/opencart-{{ oc_version }}.zip
+    become: yes
+    become_method: sudo
+    ignore_errors: True
+    when: "'oc01' in inventory_hostname"
+    tags:
+      - opencart
+
+  - name: Download OpenCart
+    get_url: url=https://codeload.github.com/opencart/opencart/zip/{{oc_version}} dest=/tmp/opencart-{{ oc_version }}.zip
+    when: "'oc01' in inventory_hostname"
+    tags:
+      - opencart
+
+  - name: Extract archive
+    unarchive:
+      src: /tmp/opencart-{{ oc_version }}.zip
+      dest: "/tmp"
+      remote_src: true
+    become: yes
+    become_method: sudo
+    when: "'oc01' in inventory_hostname"
+    tags:
+      - opencart
+
+  - name: Delete opencart folder if it exsits
+    file: path={{ www_root }}/opencart state=absent
+    become: yes
+    become_method: sudo
+    when: "'oc01' in inventory_hostname"
+    tags:
+      - opencart
+
+  - name: Move Opencart files to www_root
+    command: cp -R /tmp/opencart-{{ oc_version }}/upload {{ www_root }}/opencart
+    become: yes
+    become_method: sudo
+    when: "'oc01' in inventory_hostname"
+    tags:
+      - opencart
+
+  - name: Delete tmp files
+    file: state=absent dest={{ item }}
+    with_items:
+      - /tmp/opencart-{{ oc_version }}
+      - /tmp/opencart-{{ oc_version }}.zip
+    become: yes
+    become_method: sudo
+    when: "'oc01' in inventory_hostname"
+    tags:
+      - opencart
+
+  - name: Rename config files
+    command: mv {{ www_root }}/opencart/{{ item.value.src }} {{ www_root }}/opencart/{{ item.value.dst }}
+    with_dict: "{{ opencart_config_files }}"
+    become: yes
+    become_method: sudo
+    when: "'oc01' in inventory_hostname"
+    ignore_errors: True
+    tags:
+      - opencart
+
+  - name: Add group "opencart"
+    group: name=opencart
+    become: yes
+    become_method: sudo
+    tags:
+      - opencart
+
+  - name: Add user "opencart"
+    user: name=opencart group=opencart home="{{ oc_path }}" createhome=no
+    become: yes
+    become_method: sudo
+    tags:
+      - opencart
+
+  - name: Change ownership of opencart installation
+    file: path="{{ oc_path }}" owner=opencart group=opencart state=directory recurse=yes
+    become: yes
+    become_method: sudo
+    when: "'oc01' in inventory_hostname"
+    tags:
+      - opencart

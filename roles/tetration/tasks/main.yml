@@ -1,0 +1,69 @@
+---
+- name: Install sensors dependancies requirements
+  become: true
+  yum: pkg={{ item }} state=present
+  with_items:
+    - lsof
+    - rpm
+    - redhat-lsb
+    - ipset
+    - dmidecode
+    - cpio
+    - gawk
+    - util-linux
+    - curl
+    - openssl
+    - sed
+
+- name: Remove existing sensor
+  yum:
+    name: tet-sensor
+    state: absent
+  become: yes
+  become_method: sudo
+
+- name: Remove installation folder
+  file:
+    state: absent
+    path: /usr/local/tet
+  become: yes
+  become_method: sudo
+
+- name: Set INPUT to ACCEPT
+  iptables:
+    chain: INPUT
+    jump: ACCEPT
+    flush: yes
+  become: yes
+  become_method: sudo
+
+- name: Set OUTPUT to ACCEPT
+  iptables:
+    chain: OUTPUT
+    jump: ACCEPT
+    flush: yes
+  become: yes
+  become_method: sudo
+
+- name: Copy RPM
+  copy: src={{ sensor_file }} dest=/tmp/tet_agent_installer.sh
+
+- name: enable execute
+  file:
+    path: /tmp/tet_agent_installer.sh
+    mode: u+x
+
+- name: run sh installer
+  command:
+    cmd: sh /tmp/tet_agent_installer.sh
+  become: yes
+  become_method: sudo
+
+- name: remove installer file
+  file:
+    state: absent
+    path: /tmp/tet_agent_installer.sh
+  become: yes
+  become_method: sudo
+
+

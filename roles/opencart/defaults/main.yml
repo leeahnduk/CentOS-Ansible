@@ -1,0 +1,7 @@
+opencart_config_files:
+  config:
+    src: config-dist.php
+    dst: config.php
+  admin_config:
+    src: admin/config-dist.php
+    dst: admin/config.php

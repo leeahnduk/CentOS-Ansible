@@ -1,0 +1,30 @@
+- name: Install Percona repository
+  yum:
+    name: http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm
+    state: present
+  become: yes
+  become_method: sudo
+
+- name: Install Percona
+  yum: name={{ item }} state=present
+  with_items:
+    - Percona-XtraDB-Cluster-57
+    - MySQL-python
+    - perl-MD5
+  register: install_result
+  become: yes
+  become_method: sudo
+
+- name: Make sure mysql did not start before it is configured
+  service: name=mysql state=stopped
+  become: yes
+  become_method: sudo
+
+- name: Ensure log directories exists
+  file:
+    path: /var/log/mysql
+    state: directory
+    owner: mysql
+    group: mysql
+  become: yes
+  become_method: sudo

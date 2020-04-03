@@ -1,0 +1,5 @@
+---
+- name: restart haproxy
+  service: name=haproxy state=restarted
+  become: yes
+  become_method: sudo

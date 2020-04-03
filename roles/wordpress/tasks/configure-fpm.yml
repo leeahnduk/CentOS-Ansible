@@ -1,0 +1,21 @@
+---
+  - name: Copy nginx wordpress configuration
+    template: src=default.conf dest=/etc/nginx/conf.d/wordpress.conf
+    become: yes
+    become_method: sudo
+
+  - name: Copy php-fpm configuration
+    template: src=wordpress.conf dest=/etc/php-fpm.d/
+    become: yes
+    become_method: sudo
+
+  - name: Start php-fpm Service
+    service: name=php-fpm state=started enabled=yes
+    notify: restart nginx
+    become: yes
+    become_method: sudo
+
+  - name: Restart NGINX
+    service: name=nginx state=restarted
+    become: yes
+    become_method: sudo

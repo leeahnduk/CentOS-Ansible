@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+# Port rquotad should listen on.
+RQUOTAD_PORT=875
+
+# TCP port rpc.lockd should listen on.
+LOCKD_TCPPORT=32803
+# UDP port rpc.lockd should listen on.
+LOCKD_UDPPORT=32769
+
+# Port rpc.mountd should listen on.
+MOUNTD_PORT=892
+
+# Port rpc.statd should listen on.
+STATD_PORT=662
+# Outgoing port statd should used. The default is port
+# is random
+STATD_OUTGOING_PORT=2020
+
+# To enable RDMA support on the server by setting this to
+# the port the server should listen on
+#RDMA_PORT=20049

@@ -1,0 +1,34 @@
+---
+  - name: Install MySQL utils
+    yum: name={{ item }} state=present
+    with_items:
+      - MySQL-python
+      - perl-MD5
+     # - python-PyMySQL
+    become: yes
+    become_method: sudo
+
+  - name: create mysql database for wordpress
+    mysql_db:
+      name: "wp_asean01"
+      state: present
+      login_user: "{{ mysql_ansible_user }}"
+      login_password: "{{ mysql_ansible_password }}"
+      login_host: "acmeblog.dmz.cisco.demo"
+    when: "'wp01' in inventory_hostname"
+
+  - name: Wait for things to settle
+    pause:
+      seconds: 30
+
+  - name: create mysql user for wordpress
+    mysql_user:
+      name: "wp_asean01"
+      host: "%"
+      password: "secret"
+      priv: "wp_asean01.*:ALL"
+      state: present
+      login_user: "{{ mysql_ansible_user }}"
+      login_password: "{{ mysql_ansible_password }}"
+      login_host: "acmeblog.dmz.cisco.demo"
+    when: "'wp01' in inventory_hostname"

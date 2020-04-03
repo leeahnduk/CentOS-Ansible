@@ -1,0 +1,45 @@
+- name: Install NFS Client packages
+  yum:
+    name: nfs-utils
+    state: present
+  become: yes
+  become_method: sudo
+
+- name: Configure NFS (avoid dynamic ports)
+  template:
+    src: nfs.j2
+    dest: /etc/sysconfig/nfs
+    mode: 0644
+  become: yes
+  become_method: sudo
+
+- name: Ensure rpcbind is running.
+  service:
+    name: rpcbind
+    state: restarted
+    enabled: yes
+  become: yes
+  become_method: sudo
+
+- name: Create mountable dir
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+    mode: 0755
+    owner: root
+    group: root
+  with_items: /nfs/web/asean01
+  become: yes
+  become_method: sudo
+
+- name: set mountpoints
+  mount:
+    name: "{{ item }}"
+    src: "{{ nfs_server }}:{{ item }}"
+    fstype: nfs
+    opts: auto,noatime,nolock
+    state: mounted
+  with_items: /nfs/web/asean01
+  become: yes
+  become_method: sudo

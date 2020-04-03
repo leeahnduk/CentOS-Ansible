@@ -1,0 +1,13 @@
+---
+- name: Restart VMs
+  hosts: tetration
+  remote_user: ansible
+  gather_facts: false
+  tasks:
+    - name: restart machine
+      command: shutdown -r now "Ansible triggered"
+      async: 0
+      poll: 0
+      ignore_errors: true
+      become: yes
+      become_method: sudo

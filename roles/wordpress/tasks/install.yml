@@ -1,0 +1,45 @@
+---
+ # - name: Is WordPress downloaded?
+  #  stat: path="{{ www_root }}/wordpress/index.php"
+   # register: wp_dir
+    #wp_dir.stat.isdir is not defined
+
+  - name: Update hosts files for wordpress
+    lineinfile:
+      dest: /etc/hosts
+      line: '127.0.0.1 acmeblog.dmz.cisco.demo'
+      owner: root
+      group: root
+      mode: 0644
+    become: yes
+    become_method: sudo
+
+  - name: Download WordPress
+    get_url: url=https://wordpress.org/wordpress-5.3.2.tar.gz dest=/tmp/wordpress-5.3.2.tar.gz
+             checksum=sha1:fded476f112dbab14e3b5acddd2bcfa550e7b01b
+    when: "'wp01' in inventory_hostname"
+
+  - name: Extract archive
+    unarchive:
+      src: /tmp/wordpress-5.3.2.tar.gz
+      dest: "/nfs/web/asean01"
+      remote_src: true
+    become: yes
+    become_method: sudo
+    when: "'wp01' in inventory_hostname"
+
+  - name: Add group "wordpress"
+    group: name=wordpress
+    become: yes
+    become_method: sudo
+
+  - name: Add user "wordpress"
+    user: name=wordpress group=wordpress home="/nfs/web/asean01/wordpress"
+    become: yes
+    become_method: sudo
+
+  - name: Change ownership of WordPress installation
+    file: path="/nfs/web/asean01/wordpress" owner=wordpress group=wordpress state=directory recurse=yes
+    become: yes
+    become_method: sudo
+    when: "'wp01' in inventory_hostname"

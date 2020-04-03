@@ -1,0 +1,17 @@
+#myvm_folder path is relative to the template location. Tempalte does not need to have a path. Not sure why. 
+
+#[tetration:children]
+#percona-vms
+#nfs-vms
+#haproxy-vms
+
+[restart:children]
+nfs-vms
+
+[nfs_server:children]
+nfs-vms
+
+#TA-PODs/Shared
+
+[nfs-vms]
+aseans01-nfs01 myvm_disk="10" myvm_memory="1024" myvm_network="Core|Tetration|Tet-Shared" ansible_host="192.168.33.133" myvm_netmask="255.255.255.240" myvm_domain="dmz.cisco.demo" myvm_gw="192.168.33.129" myvm_folder="Shared"

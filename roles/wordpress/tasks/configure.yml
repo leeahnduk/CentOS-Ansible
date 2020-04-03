@@ -1,0 +1,32 @@
+---
+#  - name: Fetch random salts for WordPress config
+#    local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
+#    register: wp_salt
+#    when: "'wp01' in inventory_hostname"
+
+  - name: Copy WordPress config file
+    template: src=wp-config.php dest=/nfs/web/asean01/wordpress owner=wordpress group=wordpress
+    become: yes
+    become_method: sudo
+    when: "'wp01' in inventory_hostname"
+
+  - name: Set WP configuration
+    shell: >
+      curl --header "Host: acmeblog.dmz.cisco.demo"
+      --data-urlencode "weblog_title=Starbucks"
+      --data-urlencode "user_name=admin"
+      --data-urlencode "admin_email=anhdle@cisco.com"
+      --data-urlencode "admin_password=secret"
+      --data-urlencode "admin_password2=secret"
+      --data-urlencode "pw_weak=1" "http://localhost/wp-admin/install.php?step=2"
+    when: "'wp01' in inventory_hostname"
+    ignore_errors: True
+    tags:
+      - wp-config
+    args:
+      warn: false
+
+  - name: Set selinux to permissive
+    shell: "setenforce 0"
+    become: yes
+    become_method: sudo

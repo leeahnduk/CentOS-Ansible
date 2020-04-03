@@ -1,0 +1,50 @@
+[asean01:children]
+asean01-haproxy-vms
+#asean01-wordpress-vms
+asean01-opencart-vms
+asean01-redis-vms
+
+[asean01:vars]
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+#[tetration:children]
+#asean01-haproxy-vms
+#asean01-wordpress-vms
+#asean01-opencart-vms
+#asean01-redis-vms
+
+[restart:children]
+asean01-haproxy-vms
+asean01-wordpress-vms
+asean01-opencart-vms
+asean01-redis-vms
+
+[wordpress_server:children]
+asean01-wordpress-vms
+
+[opencart_server:children]
+asean01-opencart-vms
+
+[haproxy-fe:children]
+asean01-haproxy-vms
+
+[redis_server:children]
+asean01-redis-vms
+
+[asean01-redis-oc]
+asean01-redis01
+
+#POD01
+[asean01-haproxy-vms]
+asean01-haproxy01 myvm_disk="10" myvm_memory="1024" myvm_network="Core|Tetration|Tet-POD01" ansible_host="192.168.33.2" myvm_netmask="255.255.255.240" myvm_domain="dmz.cisco.demo" myvm_gw="192.168.33.1" myvm_folder="POD01"
+
+[asean01-wordpress-vms]
+asean01-wp01 myvm_disk="10" myvm_memory="1024" myvm_network="Core|Tetration|Tet-POD01" ansible_host="192.168.33.3" myvm_netmask="255.255.255.240" myvm_domain="dmz.cisco.demo" myvm_gw="192.168.33.1" myvm_folder="POD01"
+asean01-wp02 myvm_disk="10" myvm_memory="1024" myvm_network="Core|Tetration|Tet-POD01" ansible_host="192.168.33.4" myvm_netmask="255.255.255.240" myvm_domain="dmz.cisco.demo" myvm_gw="192.168.33.1" myvm_folder="POD01"
+
+[asean01-opencart-vms]
+asean01-oc01 myvm_disk="10" myvm_memory="1024" myvm_network="Core|Tetration|Tet-POD01" ansible_host="192.168.33.5" myvm_netmask="255.255.255.240" myvm_domain="dmz.cisco.demo" myvm_gw="192.168.33.1" myvm_folder="POD01"
+asean01-oc02 myvm_disk="10" myvm_memory="1024" myvm_network="Core|Tetration|Tet-POD01" ansible_host="192.168.33.6" myvm_netmask="255.255.255.240" myvm_domain="dmz.cisco.demo" myvm_gw="192.168.33.1" myvm_folder="POD01"
+
+[asean01-redis-vms]
+asean01-redis01 myvm_disk="10" myvm_memory="2048" myvm_network="Core|Tetration|Tet-POD01" ansible_host="192.168.33.7" myvm_netmask="255.255.255.240" myvm_domain="dmz.cisco.demo" myvm_gw="192.168.33.1" myvm_folder="POD01"

@@ -1,0 +1,15 @@
+---
+- name: Cleanup CentOS VMs
+  hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Delete VM
+      vsphere_guest:
+        validate_certs: False
+        vcenter_hostname: "{{ vm_vsphere_host }}"
+        username: "{{ vm_vsphere_user }}"
+        password: "{{ vm_vsphere_password }}"
+        guest: "{{ inventory_hostname }}"
+        state: "absent"
+        force: yes

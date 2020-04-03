@@ -1,0 +1,13 @@
+---
+- name: Install SSH keys
+  authorized_key:
+    user: root
+    state: present
+    key: '{{ item }}'
+  with_file:
+    - public_keys/anhdle.pub
+  become: yes
+  become_method: sudo
+  tags:
+    - ssh
+    - ssh-keys
